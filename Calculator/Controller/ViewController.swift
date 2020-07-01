@@ -1,23 +1,17 @@
-//
-//  ViewController.swift
-//  Calculator
-//
-//  Created by Angela Yu on 10/09/2019.
-//  Copyright © 2019 London App Brewery. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
     
     private var isFinishedTypingNumber: Bool = true
+    private var calculator = CalculatorBrain()
+    
     
     @IBOutlet weak var displayLabel: UILabel!
     
     private var displayValue: Double{
         get{
             guard let number = Double(displayLabel.text!) else {
-                fatalError("COULD NOT CONVERT DISPLAY LABEL TEXT TO DOUBLE")
+                fatalError("Could not convert displayLabel to Double")
             }
             return number
         }
@@ -32,19 +26,13 @@ class ViewController: UIViewController {
 //    What should happen when a non-number button is pressed
         isFinishedTypingNumber = true
         
+        calculator.setNumber(displayValue)
+        
         if let calcMethod = sender.currentTitle{
-            if(calcMethod == "+/-"){
-                displayLabel.text = String(displayValue * -1)
-            }
-            else if(calcMethod == "AC"){
-                displayLabel.text = String(0)
-            }
-            else if(calcMethod == "%"){
-                displayLabel.text = String(displayValue / 100)
+            if let result = calculator.calculate(symbol: calcMethod) {
+                displayValue = result
             }
         }
-        
-        
     }
 
     
